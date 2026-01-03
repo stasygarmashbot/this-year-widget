@@ -1,15 +1,28 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
 <title>THIS YEAR</title>
 
 <style>
+  :root{
+    --bg-main:#efd0cb;
+    --bg-top:#f7e4e1;
+    --bg-card:#f3dfdb;
+    --border:#d6a5a0;
+    --accent:#b35b66;
+    --text:#5a3a3e;
+  }
+
+  /* УБИРАЕМ БЕЛЫЕ ПОЛЯ: фон страницы = фон виджета */
   html, body{
     margin:0;
     padding:0;
-    background:transparent; /* убирает белую подложку */
+    width:100%;
+    height:100%;
+    background: linear-gradient(180deg, var(--bg-top), var(--bg-main));
+    overflow:hidden;
   }
 
   body{
@@ -20,19 +33,16 @@
   }
 
   .widget{
-    --bg-main:#efd0cb;
-    --bg-card:#f3dfdb;
-    --border:#d6a5a0;
-    --accent:#b35b66;
-    --text:#5a3a3e;
-
     width:360px;
     padding:18px 16px 16px;
     border-radius:22px;
-    background:linear-gradient(180deg, #f7e4e1, var(--bg-main));
-    border:1.5px solid rgba(214,165,160,.9);
-    box-shadow:0 12px 26px rgba(90,58,62,.12);
+
+    /* теперь сама карточка может быть “как стекло”, а не отдельная плашка */
+    background: rgba(255,255,255,.10);
+    border:1.5px solid rgba(214,165,160,.85);
+    box-shadow:0 12px 26px rgba(90,58,62,.10);
     box-sizing:border-box;
+    backdrop-filter: blur(2px);
   }
 
   .title{
@@ -46,12 +56,12 @@
 
   .grid{
     display:grid;
-    grid-template-columns:repeat(3,1fr);
+    grid-template-columns:repeat(3, 1fr);
     gap:10px;
   }
 
   .card{
-    background:linear-gradient(180deg, rgba(255,255,255,.9), var(--bg-card));
+    background: linear-gradient(180deg, rgba(255,255,255,.55), rgba(243,223,219,.85));
     border:1px solid rgba(214,165,160,.55);
     border-radius:14px;
     padding:12px 6px;
@@ -71,7 +81,7 @@
   .label{
     font-size:11px;
     color:var(--text);
-    opacity:.7;
+    opacity:.75;
   }
 </style>
 </head>
@@ -101,10 +111,7 @@
 <script>
   (function(){
     function pad2(n){ return String(n).padStart(2,"0"); }
-
-    function endOfYear(now){
-      return new Date(now.getFullYear(), 11, 31, 23, 59, 59, 999);
-    }
+    function endOfYear(now){ return new Date(now.getFullYear(), 11, 31, 23, 59, 59, 999); }
 
     function update(){
       var now = new Date();
