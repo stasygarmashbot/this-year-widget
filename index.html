@@ -6,94 +6,124 @@
 <title>THIS YEAR</title>
 
 <style>
-body{
-  margin:0;
-  min-height:100vh;
-  display:flex;
-  align-items:center;
-  justify-content:center;
-  background:#ffffff;
-  font-family: system-ui, Arial;
-}
+  html, body{
+    margin:0;
+    padding:0;
+    background:transparent; /* убирает белую подложку */
+  }
 
-.widget{
-  width:360px;
-  padding:18px;
-  border-radius:22px;
-  background:#efd0cb;
-  border:1px solid #d6a5a0;
-}
+  body{
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    font-family: system-ui, -apple-system, Segoe UI, Roboto, Arial;
+  }
 
-.title{
-  text-align:center;
-  font-size:13px;
-  letter-spacing:.22em;
-  font-weight:700;
-  color:#5a3a3e;
-  margin-bottom:14px;
-}
+  .widget{
+    --bg-main:#efd0cb;
+    --bg-card:#f3dfdb;
+    --border:#d6a5a0;
+    --accent:#b35b66;
+    --text:#5a3a3e;
 
-.grid{
-  display:grid;
-  grid-template-columns:repeat(3,1fr);
-  gap:10px;
-}
+    width:360px;
+    padding:18px 16px 16px;
+    border-radius:22px;
+    background:linear-gradient(180deg, #f7e4e1, var(--bg-main));
+    border:1.5px solid rgba(214,165,160,.9);
+    box-shadow:0 12px 26px rgba(90,58,62,.12);
+    box-sizing:border-box;
+  }
 
-.card{
-  background:#f3dfdb;
-  border-radius:14px;
-  padding:12px 6px;
-  text-align:center;
-}
+  .title{
+    text-align:center;
+    font-size:13px;
+    letter-spacing:.22em;
+    font-weight:700;
+    color:var(--text);
+    margin-bottom:14px;
+  }
 
-.value{
-  font-size:26px;
-  font-weight:800;
-  color:#b35b66;
-}
+  .grid{
+    display:grid;
+    grid-template-columns:repeat(3,1fr);
+    gap:10px;
+  }
 
-.label{
-  font-size:11px;
-  color:#5a3a3e;
-  opacity:.7;
-}
+  .card{
+    background:linear-gradient(180deg, rgba(255,255,255,.9), var(--bg-card));
+    border:1px solid rgba(214,165,160,.55);
+    border-radius:14px;
+    padding:12px 6px;
+    text-align:center;
+    box-sizing:border-box;
+  }
+
+  .value{
+    font-variant-numeric: tabular-nums;
+    font-size:26px;
+    font-weight:800;
+    line-height:1;
+    color:var(--accent);
+    margin-bottom:4px;
+  }
+
+  .label{
+    font-size:11px;
+    color:var(--text);
+    opacity:.7;
+  }
 </style>
 </head>
 
 <body>
-<div class="widget">
-  <div class="title">THIS YEAR</div>
+  <div class="widget">
+    <div class="title">THIS YEAR</div>
 
-  <div class="grid">
-    <div class="card">
-      <div class="value" id="days">0</div>
-      <div class="label">days</div>
-    </div>
-    <div class="card">
-      <div class="value" id="hours">00</div>
-      <div class="label">hours</div>
-    </div>
-    <div class="card">
-      <div class="value" id="minutes">00</div>
-      <div class="label">minutes</div>
+    <div class="grid">
+      <div class="card">
+        <div class="value" id="days">0</div>
+        <div class="label">days</div>
+      </div>
+
+      <div class="card">
+        <div class="value" id="hours">00</div>
+        <div class="label">hours</div>
+      </div>
+
+      <div class="card">
+        <div class="value" id="minutes">00</div>
+        <div class="label">minutes</div>
+      </div>
     </div>
   </div>
-</div>
 
 <script>
-function pad(n){return String(n).padStart(2,"0");}
-function endOfYear(n){return new Date(n.getFullYear(),11,31,23,59,59);}
-function update(){
-  let now=new Date();
-  let diff=endOfYear(now)-now;
-  if(diff<0)diff=0;
-  let m=Math.floor(diff/60000);
-  document.getElementById("days").textContent=Math.floor(m/(60*24));
-  document.getElementById("hours").textContent=pad(Math.floor(m%(60*24)/60));
-  document.getElementById("minutes").textContent=pad(m%60);
-}
-update();
-setInterval(update,1000);
+  (function(){
+    function pad2(n){ return String(n).padStart(2,"0"); }
+
+    function endOfYear(now){
+      return new Date(now.getFullYear(), 11, 31, 23, 59, 59, 999);
+    }
+
+    function update(){
+      var now = new Date();
+      var diff = endOfYear(now) - now;
+      if(diff < 0) diff = 0;
+
+      var totalMinutes = Math.floor(diff / 60000);
+      var days = Math.floor(totalMinutes / (60*24));
+      var hours = Math.floor((totalMinutes % (60*24)) / 60);
+      var minutes = totalMinutes % 60;
+
+      document.getElementById("days").textContent = String(days);
+      document.getElementById("hours").textContent = pad2(hours);
+      document.getElementById("minutes").textContent = pad2(minutes);
+    }
+
+    update();
+    setInterval(update, 1000);
+  })();
 </script>
 </body>
 </html>
