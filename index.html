@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>THIS YEAR</title>
+
+<style>
+body{
+  margin:0;
+  min-height:100vh;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  background:#ffffff;
+  font-family: system-ui, Arial;
+}
+
+.widget{
+  width:360px;
+  padding:18px;
+  border-radius:22px;
+  background:#efd0cb;
+  border:1px solid #d6a5a0;
+}
+
+.title{
+  text-align:center;
+  font-size:13px;
+  letter-spacing:.22em;
+  font-weight:700;
+  color:#5a3a3e;
+  margin-bottom:14px;
+}
+
+.grid{
+  display:grid;
+  grid-template-columns:repeat(3,1fr);
+  gap:10px;
+}
+
+.card{
+  background:#f3dfdb;
+  border-radius:14px;
+  padding:12px 6px;
+  text-align:center;
+}
+
+.value{
+  font-size:26px;
+  font-weight:800;
+  color:#b35b66;
+}
+
+.label{
+  font-size:11px;
+  color:#5a3a3e;
+  opacity:.7;
+}
+</style>
+</head>
+
+<body>
+<div class="widget">
+  <div class="title">THIS YEAR</div>
+
+  <div class="grid">
+    <div class="card">
+      <div class="value" id="days">0</div>
+      <div class="label">days</div>
+    </div>
+    <div class="card">
+      <div class="value" id="hours">00</div>
+      <div class="label">hours</div>
+    </div>
+    <div class="card">
+      <div class="value" id="minutes">00</div>
+      <div class="label">minutes</div>
+    </div>
+  </div>
+</div>
+
+<script>
+function pad(n){return String(n).padStart(2,"0");}
+function endOfYear(n){return new Date(n.getFullYear(),11,31,23,59,59);}
+function update(){
+  let now=new Date();
+  let diff=endOfYear(now)-now;
+  if(diff<0)diff=0;
+  let m=Math.floor(diff/60000);
+  document.getElementById("days").textContent=Math.floor(m/(60*24));
+  document.getElementById("hours").textContent=pad(Math.floor(m%(60*24)/60));
+  document.getElementById("minutes").textContent=pad(m%60);
+}
+update();
+setInterval(update,1000);
+</script>
+</body>
+</html>
